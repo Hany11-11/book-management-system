@@ -1,0 +1,36 @@
+<div class="book-list">
+  <h2>Books</h2>
+
+  @if (books.length === 0) {
+    <div class="empty-state">
+      <p>No books found. Add your first book!</p>
+      <a routerLink="/add" class="btn btn-primary">+ Add Book</a>
+    </div>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Publication Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books; track book.id) {
+          <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.publicationDate | date: 'mediumDate' }}</td>
+            <td class="actions">
+              <a [routerLink]="['/edit', book.id]" class="btn btn-edit">Edit</a>
+              <button (click)="deleteBook(book.id)" class="btn btn-delete">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
