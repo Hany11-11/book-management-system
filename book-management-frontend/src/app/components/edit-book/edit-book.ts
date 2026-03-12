@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { BookService } from '../../services/book.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-book',
@@ -17,15 +18,15 @@ export class EditBook implements OnInit {
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.bookService.getBook(id).subscribe(book => {
+    this.bookService.getBook(id).subscribe((book) => {
       this.book = {
         ...book,
-        publicationDate: new Date(book.publicationDate).toISOString().split('T')[0] as any
+        publicationDate: new Date(book.publicationDate).toISOString().split('T')[0] as any,
       };
       this.cdr.detectChanges();
     });
@@ -33,7 +34,14 @@ export class EditBook implements OnInit {
 
   onSubmit(): void {
     this.bookService.updateBook(this.book.id, this.book).subscribe(() => {
-      this.router.navigate(['/']);
+      Swal.fire({
+        icon: 'success',
+        title: 'Book Updated',
+        text: 'The book has been updated successfully!',
+        confirmButtonColor: '#667eea',
+      }).then(() => {
+        this.router.navigate(['/']);
+      });
     });
   }
 }

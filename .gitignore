@@ -1,0 +1,8 @@
+# .NET build outputs
+book-management-backend/bin/
+book-management-backend/obj/
+
+# Node
+book-management-frontend/node_modules/
+book-management-frontend/.angular/
+book-management-frontend/dist/

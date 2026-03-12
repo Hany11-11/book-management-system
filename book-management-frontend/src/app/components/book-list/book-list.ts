@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Book } from '../../models/book';
 import { BookService } from '../../services/book.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-book-list',
@@ -13,7 +14,10 @@ import { BookService } from '../../services/book.service';
 export class BookList implements OnInit {
   books: Book[] = [];
 
-  constructor(private bookService: BookService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private bookService: BookService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loadBooks();
@@ -25,13 +29,31 @@ export class BookList implements OnInit {
         this.books = books;
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Failed to load books:', err)
+      error: (err) => console.error('Failed to load books:', err),
     });
   }
 
   deleteBook(id: number): void {
-    if (confirm('Are you sure you want to delete this book?')) {
-      this.bookService.deleteBook(id).subscribe(() => this.loadBooks());
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This book will be permanently deleted!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e74c3c',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.bookService.deleteBook(id).subscribe(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'The book has been deleted.',
+            confirmButtonColor: '#667eea',
+          });
+          this.loadBooks();
+        });
+      }
+    });
   }
 }
