@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
   styleUrl: './edit-book.css',
 })
 export class EditBook implements OnInit {
+  today = new Date().toISOString().split('T')[0];
+
   book: Book = { id: 0, title: '', author: '', isbn: '', publicationDate: new Date() };
 
   constructor(

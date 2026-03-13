@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
   styleUrl: './add-book.css',
 })
 export class AddBook {
+  today = new Date().toISOString().split('T')[0];
+
   book: Partial<Book> = {
     title: '',
     author: '',

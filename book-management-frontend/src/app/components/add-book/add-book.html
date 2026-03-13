@@ -15,7 +15,14 @@
     </div>
     <div class="form-group">
       <label for="publicationDate">Publication Date</label>
-      <input type="date" id="publicationDate" name="publicationDate" [(ngModel)]="book.publicationDate" required />
+      <input
+        type="date"
+        id="publicationDate"
+        name="publicationDate"
+        [(ngModel)]="book.publicationDate"
+        [max]="today"
+        required
+      />
     </div>
     <div class="form-actions">
       <button type="submit" class="btn btn-primary" [disabled]="!bookForm.valid">Save</button>
